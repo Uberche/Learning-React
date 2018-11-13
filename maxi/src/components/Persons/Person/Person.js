@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 
 import classes from './Person.module.css';
 import withClass from '../../../hoc/withClass';
+import { AuthContext } from '../../../containers/App';
 
 class Person extends Component {
     constructor(props) {
         super(props);
-        console.log(props);
+        // console.log(props);
         this.inputElement = React.createRef();
     }
 
@@ -24,9 +25,11 @@ class Person extends Component {
     }
     render() {
         // console.log("person.js render");
-        console.log(this.props);
         return (
             <>
+                <AuthContext.Consumer>
+                    {auth => auth ? <p>I'm Authentic!</p> : null}
+                </AuthContext.Consumer>
                 <p onClick={this.props.click}>People Everywhere like {this.props.name} who is {this.props.age}.</p>
                 <p>{this.props.children}</p>
                 <input

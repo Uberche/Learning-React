@@ -4,6 +4,8 @@ import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
 import withClass from '../hoc/withClass';
 
+export const AuthContext = React.createContext(false);
+
 class App extends PureComponent {
   constructor(props) {
     super(props);
@@ -16,27 +18,43 @@ class App extends PureComponent {
         { id: 'd', name: "Criee", age: 233 }
       ],
       showPersons: false,
-      toggleClicked: 0
+      toggleClicked: 0,
+      authenticated: false
     }
 
   }
 
-  componentWillMount() {
-    // console.log('app.js willmount');
-  }
+  // DO NOT USE!
+  // componentWillMount() {
+  //   // console.log('app.js willmount');
+  // }
 
   componentDidMount() {
     // console.log('app.js didmount');
   }
 
-  componentWillReceiveProps(nextProps) {
-    // console.log('app.js will recieve props', nextProps);
+  //DO NOT USE!!
+  // componentWillReceiveProps(nextProps) {
+  //   // console.log('app.js will recieve props', nextProps);
+  // }
+
+  //DO NOT USE!
+  // componentWillUpdate(nextProps) {
+  //   // console.log("app.js will update");
+  // }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+
+    console.log('app.js get drived state from props', nextProps, prevState);
+    return prevState;
   }
 
+  // Works with componentdidupdate. Save scroll position before adding list item in snapshot, then in didupdate move user to that position. Update list but user doesn't move.
+  getSnapshotBeforeUpdate(nextProps, prevState) {
 
-  componentWillUpdate(nextProps) {
-    // console.log("app.js will update");
+    console.log('app.js get SnapshotBeforeUpdate');
   }
+
 
   nameChangedHandler = (e, id) => {
     const personIndex = this.state.persons.findIndex(per => {
@@ -71,6 +89,10 @@ class App extends PureComponent {
     });
   }
 
+  loginHandler = () => {
+    this.setState({ authenticated: true });
+  }
+
   render() {
     let persons = null;
 
@@ -93,8 +115,11 @@ class App extends PureComponent {
           appTitle={this.props.title}
           showPersons={this.state.showPersons}
           persons={this.state.persons}
-          toggle={this.togglePersonsHandler} />
-        {persons}
+          toggle={this.togglePersonsHandler}
+          login={this.loginHandler} />
+        <AuthContext.Provider value={this.state.authenticated}>
+          {persons}
+        </AuthContext.Provider>
       </>
     );
   }
