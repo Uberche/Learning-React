@@ -5,8 +5,8 @@ import classes from './Logo.module.css';
 
 const logo = (props) => (
     <div className={classes.Logo}>
-        <img src={burgerLogo} alt="Burger Logo" />
-    </div>
+        <a href="/"><img src={burgerLogo} alt="Burger Logo" /></a>
+    </div >
 );
 
 export default logo;
